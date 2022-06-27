@@ -3,6 +3,33 @@
 
 import json
 
+from src import db
+from src.api.models import User
+
+
+# GET
+
+def test_single_user(test_app, test_database):
+    user = User(username='jeffrey', email='jeffrey@testdriven.io')
+    db.session.add(user)
+    db.session.commit()
+    client = test_app.test_client()
+    resp = client.get(f'/users/{user.id}')
+    data = json.loads(resp.data.decode())
+    assert resp.status_code == 200
+    assert 'jeffrey' in data['username']
+    assert 'jeffrey@testdriven.io' in data['email']
+
+
+def test_single_user_incorrect_id(test_app, test_database):
+    client = test_app.test_client()
+    resp = client.get('/users/999')
+    data = json.loads(resp.data.decode())
+    assert resp.status_code == 404
+    assert 'User 999 does not exist' in data['message']
+
+# POST
+
 
 def test_add_user(test_app, test_database):
     client = test_app.test_client()
