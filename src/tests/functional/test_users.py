@@ -3,16 +3,13 @@
 
 import json
 
-from src import db
 from src.api.models import User
 
 
 # GET
 
-def test_single_user(test_app, test_database):
-    user = User(username='jeffrey', email='jeffrey@testdriven.io')
-    db.session.add(user)
-    db.session.commit()
+def test_single_user(test_app, test_database, add_user):
+    user = add_user('jeffrey', 'jeffrey@testdriven.io')
     client = test_app.test_client()
     resp = client.get(f'/users/{user.id}')
     data = json.loads(resp.data.decode())
