@@ -22,15 +22,17 @@ def recreate_db():
 
 @cli.command('seed_db')
 def seed_db():
-    try:
-        db.session.query(User).filter_by(email="hermanmu@gmail.com").first()
-    except:
-        db.session.add(User(username='michael', email="hermanmu@gmail.com"))
-    try:
-        db.session.query(User).filter_by(email="michael@mherman.org").first()
-    except:
-        db.session.add(User(username='michaelherman',
-                            email="michael@mherman.org"))
+    db.session.add(User(username='michael', email="hermanmu@gmail.com"))
+    db.session.add(User(username='michaelherman', email="michael@mherman.org"))
+    # try:
+    #     db.session.query(User).filter_by(email="hermanmu@gmail.com").first()
+    # except:
+    #     db.session.add(User(username='michael', email="hermanmu@gmail.com"))
+    # try:
+    #     db.session.query(User).filter_by(email="michael@mherman.org").first()
+    # except:
+    #     db.session.add(User(username='michaelherman',
+    #                         email="michael@mherman.org"))
     db.session.commit()
 
 
