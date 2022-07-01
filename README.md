@@ -1,5 +1,7 @@
 # Flask-Docker
 
+[![pipeline status](https://gitlab.com/theprankmonkey/flask-tdd-docker/badges/master/pipeline.svg)](https://gitlab.com/theprankmonkey/flask-tdd-docker/commits/master)
+
 ## Build
 
 `docker-compose up -d`
