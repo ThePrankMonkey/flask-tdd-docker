@@ -135,6 +135,21 @@ def test_update_user_invalid(test_app, test_database, user_id, payload, status_c
     assert message in data["message"]
 
 
+def test_update_user_duplicate_email(test_app, test_database, add_user):
+    add_user("hajek", "rob@hajek.org")
+    user = add_user("rob", "rob@notreal.com")
+
+    client = test_app.test_client()
+    resp = client.put(
+        f"/users/{user.id}",
+        data=json.dumps({"username": "rob", "email": "rob@notreal.com"}),
+        content_type="application/json",
+    )
+    data = json.loads(resp.data.decode())
+    assert resp.status_code == 400
+    assert "Sorry. That email already exists." in data["message"]
+
+
 # DELETE
 
 def test_remove_user(test_app, test_database, add_user):
