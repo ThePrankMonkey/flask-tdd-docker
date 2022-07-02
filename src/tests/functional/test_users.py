@@ -2,12 +2,13 @@
 
 
 import json
+
 import pytest
 
 from src.api.models import User
 
-
 # CREATE
+
 
 def test_add_user(test_app, test_database):
     client = test_app.test_client()
@@ -64,6 +65,7 @@ def test_add_user_duplicate_email(test_app, test_database):
 
 # RETRIEVE
 
+
 def test_single_user(test_app, test_database, add_user):
     user = add_user("jeffrey", "jeffrey@testdriven.io")
     client = test_app.test_client()
@@ -99,6 +101,7 @@ def test_all_users(test_app, test_database, add_user):
 
 # UPDATE
 
+
 def test_update_user(test_app, test_database, add_user):
     user = add_user("user-to-be-updated", "update-me@testdriven.io")
     client = test_app.test_client()
@@ -118,12 +121,22 @@ def test_update_user(test_app, test_database, add_user):
     assert "me@testdriven.io" in data["email"]
 
 
-@pytest.mark.parametrize("user_id, payload, status_code, message", [
-    [1, {}, 400, "Input payload validation failed"],
-    [1, {"email": "me@testdriven.io"}, 400, "Input payload validation failed"],
-    [999, {"username": "me", "email": "me@testdriven.io"}, 404, "User 999 does not exist"],
-])
-def test_update_user_invalid(test_app, test_database, user_id, payload, status_code, message):
+@pytest.mark.parametrize(
+    "user_id, payload, status_code, message",
+    [
+        [1, {}, 400, "Input payload validation failed"],
+        [1, {"email": "me@testdriven.io"}, 400, "Input payload validation failed"],
+        [
+            999,
+            {"username": "me", "email": "me@testdriven.io"},
+            404,
+            "User 999 does not exist",
+        ],
+    ],
+)
+def test_update_user_invalid(
+    test_app, test_database, user_id, payload, status_code, message
+):
     client = test_app.test_client()
     resp = client.put(
         f"/users/{user_id}",
@@ -152,6 +165,7 @@ def test_update_user_duplicate_email(test_app, test_database, add_user):
 
 # DELETE
 
+
 def test_remove_user(test_app, test_database, add_user):
     test_database.session.query(User).delete()
     user = add_user("user-to-be-removed", "remove-me@testdriven.io")
@@ -164,7 +178,7 @@ def test_remove_user(test_app, test_database, add_user):
     resp_two = client.delete(f"/users/{user.id}")
     data = json.loads(resp_two.data.decode())
     assert resp_two.status_code == 200
-    assert 'remove-me@testdriven.io was removed!' in data['message']
+    assert "remove-me@testdriven.io was removed!" in data["message"]
 
     resp_three = client.get("/users")
     data = json.loads(resp_three.data.decode())
