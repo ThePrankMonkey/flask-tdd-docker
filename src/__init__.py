@@ -28,9 +28,11 @@ def create_app(script_info=None):
 
     # register blueprints
     from src.api.ping import ping_blueprint
+
     app.register_blueprint(ping_blueprint)
 
     from src.api.users.views import users_blueprint
+
     app.register_blueprint(users_blueprint)
 
     # shell context for flask cli
