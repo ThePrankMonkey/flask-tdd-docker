@@ -81,7 +81,9 @@ Check Logs:
 heroku logs --app $HEROKU_APP
 ```
 
-## Dummy
+## GitLab
 
-http --json POST https://$HEROKU_APP.herokuapp.com/users username=hello email=hello@world.com
-curl -X POST https://$HEROKU_APP.herokuapp.com/users -H 'Content-Type: application/json' -d '{"username":"hello", "email":"hello@world.com"}'
+Add two Variables to Project > Settings > CI/CD > Variables
+
+- HEROKU_AUTH_TOKEN
+- SECRET_KEY
